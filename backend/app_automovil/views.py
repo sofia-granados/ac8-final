@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from django.http import HttpResponse
 from .models import (
     Mecanico, Cliente_Taller, Vehiculo_Taller, 
@@ -266,20 +267,46 @@ def inicio_detalles(request):
 def agregar_detalle(request):
     ordenes = Orden_Reparacion.objects.all()
     repuestos = Repuesto.objects.all()
+    
     if request.method == 'POST':
-        orden = get_object_or_404(Orden_Reparacion, id_orden=request.POST['id_orden'])
-        repuesto = get_object_or_404(Repuesto, id_repuesto=request.POST['id_repuesto'])
-        detalle = Detalle_Reparacion(
-            id_orden=orden,
-            id_repuesto=repuesto,
-            cantidad_repuesto=request.POST['cantidad_repuesto'],
-            precio_repuesto_unitario=request.POST['precio_repuesto_unitario'],
-            mano_obra_horas=request.POST['mano_obra_horas'],
-            costo_mano_obra_hora=request.POST['costo_mano_obra_hora']
-        )
-        detalle.save()  # El subtotal se calcula automáticamente en el save()
-        return redirect('app_automovil:inicio_detalles')
-    return render(request, 'detalle/agregar_detalle.html', {'ordenes': ordenes, 'repuestos': repuestos})
+        try:
+            orden_id = request.POST.get('id_orden')
+            repuesto_id = request.POST.get('id_repuesto')
+            
+            if not orden_id or not repuesto_id:
+                messages.error(request, 'Debe seleccionar una orden y un repuesto')
+                return render(request, 'detalle/agregar_detalle.html', {
+                    'ordenes': ordenes, 
+                    'repuestos': repuestos
+                })
+            
+            orden = get_object_or_404(Orden_Reparacion, id_orden=orden_id)
+            repuesto = get_object_or_404(Repuesto, id_repuesto=repuesto_id)
+            
+            detalle = Detalle_Reparacion(
+                id_orden=orden,
+                id_repuesto=repuesto,
+                cantidad_repuesto=int(request.POST['cantidad_repuesto']),
+                precio_repuesto_unitario=float(request.POST['precio_repuesto_unitario']),
+                mano_obra_horas=float(request.POST['mano_obra_horas']),
+                costo_mano_obra_hora=float(request.POST['costo_mano_obra_hora'])
+            )
+            
+            detalle.save()
+            messages.success(request, 'Detalle agregado correctamente')
+            return redirect('app_automovil:inicio_detalles')
+            
+        except Exception as e:
+            messages.error(request, f'Error al agregar detalle: {str(e)}')
+            return render(request, 'detalle/agregar_detalle.html', {
+                'ordenes': ordenes, 
+                'repuestos': repuestos
+            })
+    
+    return render(request, 'detalle/agregar_detalle.html', {
+        'ordenes': ordenes, 
+        'repuestos': repuestos
+    })
 
 def actualizar_detalle(request, id_detalle_rep):
     detalle = get_object_or_404(Detalle_Reparacion, id_detalle_rep=id_detalle_rep)

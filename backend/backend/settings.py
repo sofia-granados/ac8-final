@@ -1,12 +1,13 @@
 import os
 from pathlib import Path
 import dj_database_url
+import logging
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-taller-mecanico-0237-grupo16'
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -101,3 +102,23 @@ SESSION_COOKIE_SAMESITE = 'None'
 
 CORS_ALLOW_CREDENTIALS = True
 CSRF_COOKIE_HTTPONLY = False
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'app_automovil': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}

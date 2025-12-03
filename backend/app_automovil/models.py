@@ -109,7 +109,17 @@ class Detalle_Reparacion(models.Model):
     subtotal_item = models.DecimalField(max_digits=10, decimal_places=2)
 
     def save(self, *args, **kwargs):
-        self.subtotal_item = (self.cantidad_repuesto * self.precio_repuesto_unitario) +                             (self.mano_obra_horas * self.costo_mano_obra_hora)
+        try:
+            cantidad = float(self.cantidad_repuesto)
+            precio_unitario = float(self.precio_repuesto_unitario)
+            horas = float(self.mano_obra_horas)
+            costo_hora = float(self.costo_mano_obra_hora)
+            
+            subtotal = (cantidad * precio_unitario) + (horas * costo_hora)
+            self.subtotal_item = subtotal
+        except (TypeError, ValueError) as e:
+            self.subtotal_item = 0
+        
         super().save(*args, **kwargs)
 
     def __str__(self):
