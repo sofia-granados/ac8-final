@@ -1,0 +1,26 @@
+<footer class="footer mt-auto py-3 bg-dark text-white fixed-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <span>© 2024 Sistema de Gestión Taller Mecánico - Todos los derechos reservados</span>
+            </div>
+            <div class="col-md-6 text-end">
+                <span id="fecha-sistema"></span> | 
+                <span>Creado por Sofia Granados, CBTIS 128 - Grupo 16</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Mostrar fecha del sistema
+        const fecha = new Date();
+        const options = { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        };
+        document.getElementById('fecha-sistema').textContent = 
+            fecha.toLocaleDateString('es-ES', options);
+    </script>
+</footer>

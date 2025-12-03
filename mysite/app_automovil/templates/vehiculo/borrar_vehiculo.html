@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block titulo %}Borrar Vehículo{% endblock %}
+
+{% block contenido %}
+<div class="container">
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading"><i class="bi bi-exclamation-triangle"></i> ¡Confirmación de Eliminación!</h4>
+        <p>¿Estás seguro de que deseas borrar el vehículo?</p>
+        <hr>
+        <h5>{{ vehiculo.marca }} {{ vehiculo.modelo }} - {{ vehiculo.matricula }}</h5>
+        <p class="mb-0"><strong>Cliente:</strong> {{ vehiculo.id_cliente.nombre }}</p>
+        <p class="mb-0"><strong>Color:</strong> {{ vehiculo.color }}</p>
+        <p class="mb-0"><strong>Año:</strong> {{ vehiculo.ano }}</p>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="mt-4">
+            <button type="submit" class="btn btn-danger">
+                <i class="bi bi-trash"></i> Sí, Borrar
+            </button>
+            <a href="{% url 'app_automovil:inicio_vehiculos' %}" class="btn btn-secondary">
+                <i class="bi bi-x-circle"></i> Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

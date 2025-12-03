@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block titulo %}Actualizar Vehículo{% endblock %}
+
+{% block contenido %}
+<div class="container">
+    <h2 class="mb-4"><i class="bi bi-pencil"></i> Actualizar Vehículo</h2>
+    
+    <form method="post" class="bg-light p-4 rounded shadow">
+        {% csrf_token %}
+        
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label">Marca</label>
+                <input type="text" class="form-control" name="marca" 
+                       value="{{ vehiculo.marca }}" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Modelo</label>
+                <input type="text" class="form-control" name="modelo" 
+                       value="{{ vehiculo.modelo }}" required>
+            </div>
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label class="form-label">Año</label>
+                <input type="number" class="form-control" name="ano" 
+                       value="{{ vehiculo.ano }}" required>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Matrícula</label>
+                <input type="text" class="form-control" name="matricula" 
+                       value="{{ vehiculo.matricula }}" required>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Color</label>
+                <input type="text" class="form-control" name="color" 
+                       value="{{ vehiculo.color }}" required>
+            </div>
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label">Número de Chasis</label>
+                <input type="text" class="form-control" name="num_chasis" 
+                       value="{{ vehiculo.num_chasis }}" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Kilometraje de Entrada</label>
+                <input type="number" class="form-control" name="kilometraje_entrada" 
+                       value="{{ vehiculo.kilometraje_entrada }}" required>
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label">Cliente</label>
+            <select class="form-select" name="id_cliente" required>
+                <option value="">Seleccionar cliente...</option>
+                {% for cliente in clientes %}
+                <option value="{{ cliente.id_cliente }}" 
+                        {% if cliente.id_cliente == vehiculo.id_cliente.id_cliente %}selected{% endif %}>
+                    {{ cliente.nombre }} {{ cliente.apellido }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label">Estado General</label>
+            <textarea class="form-control" name="estado_general" rows="3" required>{{ vehiculo.estado_general }}</textarea>
+        </div>
+        
+        <div class="mt-4">
+            <button type="submit" class="btn btn-warning">
+                <i class="bi bi-arrow-clockwise"></i> Actualizar
+            </button>
+            <a href="{% url 'app_automovil:inicio_vehiculos' %}" class="btn btn-secondary">
+                <i class="bi bi-x-circle"></i> Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

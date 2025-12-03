@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% block titulo %}Inicio - Taller Mecánico{% endblock %}
+
+{% block contenido %}
+<div class="container-fluid">
+    <h2 class="mb-4 text-primary">Dashboard del Taller Mecánico</h2>
+    
+    <!-- Estadísticas -->
+    <div class="row mb-4">
+        <div class="col-md-2">
+            <div class="card card-stat bg-primary text-white">
+                <div class="card-body text-center">
+                    <h5 class="card-title"><i class="bi bi-people"></i></h5>
+                    <h2>{{ total_mecanicos }}</h2>
+                    <p class="card-text">Mecánicos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card card-stat bg-success text-white">
+                <div class="card-body text-center">
+                    <h5 class="card-title"><i class="bi bi-person-check"></i></h5>
+                    <h2>{{ total_clientes }}</h2>
+                    <p class="card-text">Clientes</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card card-stat bg-warning text-dark">
+                <div class="card-body text-center">
+                    <h5 class="card-title"><i class="bi bi-car-front"></i></h5>
+                    <h2>{{ total_vehiculos }}</h2>
+                    <p class="card-text">Vehículos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card card-stat bg-info text-white">
+                <div class="card-body text-center">
+                    <h5 class="card-title"><i class="bi bi-clipboard-check"></i></h5>
+                    <h2>{{ total_ordenes }}</h2>
+                    <p class="card-text">Órdenes</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card card-stat bg-secondary text-white">
+                <div class="card-body text-center">
+                    <h5 class="card-title"><i class="bi bi-gear"></i></h5>
+                    <h2>{{ total_repuestos }}</h2>
+                    <p class="card-text">Repuestos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card card-stat bg-danger text-white">
+                <div class="card-body text-center">
+                    <h5 class="card-title"><i class="bi bi-receipt"></i></h5>
+                    <h2>{{ total_facturas }}</h2>
+                    <p class="card-text">Facturas</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Contenido principal -->
+    <div class="row">
+        <!-- Órdenes Recientes -->
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Órdenes Recientes</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Vehículo</th>
+                                    <th>Estado</th>
+                                    <th>Mecánico</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for orden in ordenes_recientes %}
+                                <tr>
+                                    <td>#{{ orden.id_orden }}</td>
+                                    <td>{{ orden.id_vehiculo.marca }} {{ orden.id_vehiculo.modelo }}</td>
+                                    <td>
+                                        {% if orden.estado_orden == 'PENDIENTE' %}
+                                            <span class="badge bg-warning">Pendiente</span>
+                                        {% elif orden.estado_orden == 'EN_PROCESO' %}
+                                            <span class="badge bg-info">En Proceso</span>
+                                        {% elif orden.estado_orden == 'COMPLETADO' %}
+                                            <span class="badge bg-success">Completado</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">{{ orden.estado_orden }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ orden.id_mecanico_asignado.nombre }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center">No hay órdenes recientes</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mecánicos Disponibles -->
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="bi bi-people-fill me-2"></i>Mecánicos Disponibles</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for mecanico in mecanicos %}
+                        <div class="col-md-6 mb-3">
+                            <div class="card border-success">
+                                <div class="card-body">
+                                    <h6 class="card-title">{{ mecanico.nombre }} {{ mecanico.apellido }}</h6>
+                                    <p class="card-text small text-muted">
+                                        <i class="bi bi-wrench"></i> {{ mecanico.especialidad }}<br>
+                                        <i class="bi bi-telephone"></i> {{ mecanico.telefono }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-12">
+                            <p class="text-center">No hay mecánicos registrados</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Imagen y descripción -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">
+                        <i class="bi bi-building me-2"></i>Sistema de Gestión de Taller Mecánico
+                    </h5>
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300&q=80" 
+                                 class="img-fluid rounded shadow" 
+                                 alt="Taller Mecánico Moderno">
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mt-3">
+                                <strong>Sistema desarrollado por Grupo 16 - CBTIS 128</strong><br>
+                                Aplicación web completa para la gestión integral de taller mecánico.
+                            </p>
+                            <ul>
+                                <li>Gestión de clientes y vehículos</li>
+                                <li>Control de mecánicos y especialidades</li>
+                                <li>Seguimiento de órdenes de reparación</li>
+                                <li>Inventario de repuestos</li>
+                                <li>Generación de facturas</li>
+                                <li>Reportes y estadísticas</li>
+                            </ul>
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle me-2"></i>
+                                <strong>Instrucciones:</strong> Utilice el menú lateral para acceder a las diferentes secciones del sistema.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

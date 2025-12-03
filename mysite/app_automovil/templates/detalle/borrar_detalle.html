@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block titulo %}Borrar Detalle de Reparación{% endblock %}
+
+{% block contenido %}
+<div class="container">
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading"><i class="bi bi-exclamation-triangle"></i> ¡Confirmación de Eliminación!</h4>
+        <p>¿Estás seguro de que deseas borrar el detalle de reparación?</p>
+        <hr>
+        <h5>Detalle #{{ detalle.id_detalle_rep }}</h5>
+        <p class="mb-0"><strong>Orden:</strong> #{{ detalle.id_orden.id_orden }}</p>
+        <p class="mb-0"><strong>Repuesto:</strong> {{ detalle.id_repuesto.nombre_repuesto }}</p>
+        <p class="mb-0"><strong>Cantidad:</strong> {{ detalle.cantidad_repuesto }}</p>
+        <p class="mb-0"><strong>Subtotal:</strong> ${{ detalle.subtotal_item }}</p>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="mt-4">
+            <button type="submit" class="btn btn-danger">
+                <i class="bi bi-trash"></i> Sí, Borrar
+            </button>
+            <a href="{% url 'app_automovil:inicio_detalles' %}" class="btn btn-secondary">
+                <i class="bi bi-x-circle"></i> Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

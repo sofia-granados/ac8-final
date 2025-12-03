@@ -1,0 +1,99 @@
+<nav class="navbar navbar-expand-md">
+    <div class="container-fluid flex-column align-items-start">
+        <a class="navbar-brand text-white mb-4" href="{% url 'app_automovil:inicio' %}">
+            <i class="bi bi-car-front-fill me-2"></i>Taller Mecánico 0237
+        </a>
+        
+        <ul class="navbar-nav flex-column w-100">
+            <li class="nav-item mb-2">
+                <a class="nav-link" href="{% url 'app_automovil:inicio' %}">
+                    <i class="bi bi-house-door me-2"></i>Inicio
+                </a>
+            </li>
+            
+            <!-- Mecánicos -->
+            <li class="nav-item dropdown mb-2">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-people me-2"></i>Mecánicos
+                </a>
+                <ul class="dropdown-menu bg-dark">
+                    <li><a class="dropdown-item text-white" href="{% url 'app_automovil:agregar_mecanico' %}">Agregar Mecánico</a></li>
+                    <li><a class="dropdown-item text-white" href="{% url 'app_automovil:inicio_mecanicos' %}">Ver Mecánicos</a></li>
+                </ul>
+            </li>
+            
+            <!-- Clientes -->
+            <li class="nav-item dropdown mb-2">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-person-badge me-2"></i>Clientes
+                </a>
+                <ul class="dropdown-menu bg-dark">
+                    <li><a class="dropdown-item text-white" href="{% url 'app_automovil:agregar_cliente' %}">Agregar Cliente</a></li>
+                    <li><a class="dropdown-item text-white" href="{% url 'app_automovil:inicio_clientes' %}">Ver Clientes</a></li>
+                </ul>
+            </li>
+            
+            <!-- Vehículos -->
+            <li class="nav-item dropdown mb-2">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-car-front me-2"></i>Vehículos
+                </a>
+                <ul class="dropdown-menu bg-dark">
+                    <li><a class="dropdown-item text-white" href="{% url 'app_automovil:agregar_vehiculo' %}">Agregar Vehículo</a></li>
+                    <li><a class="dropdown-item text-white" href="{% url 'app_automovil:inicio_vehiculos' %}">Ver Vehículos</a></li>
+                </ul>
+            </li>
+            
+            <!-- Órdenes -->
+            <li class="nav-item dropdown mb-2">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-clipboard-check me-2"></i>Órdenes
+                </a>
+                <ul class="dropdown-menu bg-dark">
+                    <li><a class="dropdown-item text-white" href="{% url 'app_automovil:agregar_orden' %}">Agregar Orden</a></li>
+                    <li><a class="dropdown-item text-white" href="{% url 'app_automovil:inicio_ordenes' %}">Ver Órdenes</a></li>
+                </ul>
+            </li>
+            
+            <!-- Repuestos -->
+            <li class="nav-item dropdown mb-2">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-gear me-2"></i>Repuestos
+                </a>
+                <ul class="dropdown-menu bg-dark">
+                    <li><a class="dropdown-item text-white" href="{% url 'app_automovil:agregar_repuesto' %}">Agregar Repuesto</a></li>
+                    <li><a class="dropdown-item text-white" href="{% url 'app_automovil:inicio_repuestos' %}">Ver Repuestos</a></li>
+                </ul>
+            </li>
+            
+            <!-- Detalles -->
+            <li class="nav-item dropdown mb-2">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-wrench me-2"></i>Detalles
+                </a>
+                <ul class="dropdown-menu bg-dark">
+                    <li><a class="dropdown-item text-white" href="{% url 'app_automovil:agregar_detalle' %}">Agregar Detalle</a></li>
+                    <li><a class="dropdown-item text-white" href="{% url 'app_automovil:inicio_detalles' %}">Ver Detalles</a></li>
+                </ul>
+            </li>
+            
+            <!-- Facturas -->
+            <li class="nav-item dropdown mb-2">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-receipt me-2"></i>Facturas
+                </a>
+                <ul class="dropdown-menu bg-dark">
+                    <li><a class="dropdown-item text-white" href="{% url 'app_automovil:agregar_factura' %}">Agregar Factura</a></li>
+                    <li><a class="dropdown-item text-white" href="{% url 'app_automovil:inicio_facturas' %}">Ver Facturas</a></li>
+                </ul>
+            </li>
+            
+            <!-- Admin -->
+            <li class="nav-item mb-2 mt-4">
+                <a class="nav-link text-warning" href="/admin/" target="_blank">
+                    <i class="bi bi-shield-lock me-2"></i>Panel Admin
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block titulo %}Borrar Factura{% endblock %}
+
+{% block contenido %}
+<div class="container">
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading"><i class="bi bi-exclamation-triangle"></i> ¡Confirmación de Eliminación!</h4>
+        <p>¿Estás seguro de que deseas borrar la factura?</p>
+        <hr>
+        <h5>Factura #{{ factura.id_factura }}</h5>
+        <p class="mb-0"><strong>Orden:</strong> #{{ factura.id_orden.id_orden }}</p>
+        <p class="mb-0"><strong>Cliente:</strong> {{ factura.id_cliente_factura.nombre }}</p>
+        <p class="mb-0"><strong>Total:</strong> ${{ factura.total_factura }}</p>
+        <p class="mb-0"><strong>Estado:</strong> {{ factura.estado_pago }}</p>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="mt-4">
+            <button type="submit" class="btn btn-danger">
+                <i class="bi bi-trash"></i> Sí, Borrar
+            </button>
+            <a href="{% url 'app_automovil:inicio_facturas' %}" class="btn btn-secondary">
+                <i class="bi bi-x-circle"></i> Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

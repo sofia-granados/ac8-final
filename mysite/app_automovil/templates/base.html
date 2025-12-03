@@ -1,0 +1,834 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Taller Mecánico 0237{% endblock %}</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <!-- Font Awesome (opcional, para más iconos) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Estilos personalizados -->
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --info-color: #3498db;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header Styles */
+        .main-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--dark-color) 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .logo-text h1 {
+            font-size: 1.8rem;
+            margin: 0;
+            font-weight: 700;
+        }
+        
+        .logo-text p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin: 0;
+        }
+        
+        /* Main Content Layout */
+        .main-container {
+            display: flex;
+            flex: 1;
+            min-height: calc(100vh - 140px);
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, var(--primary-color) 0%, #1a252f 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-collapsed {
+            width: 70px;
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .nav-item {
+            margin-bottom: 5px;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--light-color);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left-color: var(--secondary-color);
+        }
+        
+        .nav-link.active {
+            background-color: rgba(52, 152, 219, 0.2);
+            color: white;
+            border-left-color: var(--secondary-color);
+        }
+        
+        .nav-icon {
+            margin-right: 10px;
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .nav-text {
+            transition: opacity 0.3s;
+        }
+        
+        .sidebar-collapsed .nav-text {
+            opacity: 0;
+            width: 0;
+            overflow: hidden;
+        }
+        
+        .dropdown-menu {
+            background-color: var(--dark-color);
+            border: none;
+            border-radius: 0 0 8px 8px;
+            padding: 0;
+        }
+        
+        .dropdown-item {
+            color: white;
+            padding: 10px 20px;
+            border-left: 4px solid transparent;
+        }
+        
+        .dropdown-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left-color: var(--accent-color);
+        }
+        
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background-color: #f8f9fa;
+            overflow-y: auto;
+        }
+        
+        .content-header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .content-title h2 {
+            color: var(--primary-color);
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .content-title p {
+            color: #666;
+            margin: 5px 0 0;
+            font-size: 0.95rem;
+        }
+        
+        .breadcrumb {
+            background: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .breadcrumb-item a {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+        
+        /* Card Styles */
+        .card-custom {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .card-custom:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .card-header-custom {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--dark-color) 100%);
+            color: white;
+            padding: 15px 20px;
+            border-bottom: none;
+        }
+        
+        /* Button Styles */
+        .btn-custom {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #2980b9 100%);
+            color: white;
+        }
+        
+        .btn-primary-custom:hover {
+            background: linear-gradient(135deg, #2980b9 0%, #1c5a7a 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-success-custom {
+            background: linear-gradient(135deg, var(--success-color) 0%, #219653 100%);
+            color: white;
+        }
+        
+        .btn-warning-custom {
+            background: linear-gradient(135deg, var(--warning-color) 0%, #e67e22 100%);
+            color: white;
+        }
+        
+        .btn-danger-custom {
+            background: linear-gradient(135deg, var(--danger-color) 0%, #c0392b 100%);
+            color: white;
+        }
+        
+        /* Table Styles */
+        .table-custom {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .table-custom thead {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--dark-color) 100%);
+            color: white;
+        }
+        
+        .table-custom th {
+            border: none;
+            padding: 15px;
+            font-weight: 600;
+        }
+        
+        .table-custom td {
+            padding: 12px 15px;
+            vertical-align: middle;
+            border-color: #eee;
+        }
+        
+        .table-custom tbody tr:hover {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+        
+        /* Badge Styles */
+        .badge-custom {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        
+        /* Alert Styles */
+        .alert-custom {
+            border-radius: 10px;
+            border: none;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+        }
+        
+        /* Footer Styles */
+        .main-footer {
+            background: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            margin-top: auto;
+            border-top: 4px solid var(--secondary-color);
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        
+        .footer-left p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .footer-right {
+            text-align: right;
+        }
+        
+        .footer-right p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                padding: 10px 0;
+            }
+            
+            .sidebar-collapsed {
+                width: 100%;
+            }
+            
+            .nav-menu {
+                display: flex;
+                overflow-x: auto;
+                padding: 0 10px;
+            }
+            
+            .nav-item {
+                margin-bottom: 0;
+                margin-right: 10px;
+            }
+            
+            .nav-link {
+                padding: 10px 15px;
+                white-space: nowrap;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+                padding: 0 1rem;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            
+            .footer-right {
+                text-align: center;
+            }
+        }
+        
+        /* Animation for page transitions */
+        .page-transition {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Loading spinner */
+        .spinner-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100px;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary-color);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2980b9;
+        }
+    </style>
+    
+    <!-- JavaScript para funcionalidades -->
+    <script>
+        // Función para alternar el sidebar
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const navTexts = document.querySelectorAll('.nav-text');
+            
+            sidebar.classList.toggle('sidebar-collapsed');
+            
+            navTexts.forEach(text => {
+                if (sidebar.classList.contains('sidebar-collapsed')) {
+                    text.style.opacity = '0';
+                    text.style.width = '0';
+                } else {
+                    text.style.opacity = '1';
+                    text.style.width = 'auto';
+                }
+            });
+        }
+        
+        // Mostrar fecha y hora actual
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            const dateTimeStr = now.toLocaleDateString('es-ES', options);
+            const dateTimeElement = document.getElementById('current-datetime');
+            if (dateTimeElement) {
+                dateTimeElement.textContent = dateTimeStr;
+            }
+        }
+        
+        // Inicializar cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDateTime();
+            // Actualizar cada minuto
+            setInterval(updateDateTime, 60000);
+            
+            // Resaltar enlace activo
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Confirmación para acciones de borrado
+            const deleteButtons = document.querySelectorAll('.btn-delete-confirm');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    if (!confirm('¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.')) {
+                        e.preventDefault();
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="logo-container">
+                <i class="bi bi-car-front-fill logo-icon"></i>
+                <div class="logo-text">
+                    <h1>Taller Mecánico 0237</h1>
+                    <p>Sistema de Gestión Integral</p>
+                </div>
+            </div>
+            <div class="header-info">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="text-end">
+                        <p class="mb-0" id="current-datetime"></p>
+                        <small>Sesión activa</small>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle me-1"></i> Usuario
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Perfil</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Configuración</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header d-flex justify-content-between align-items-center">
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="bi bi-list"></i>
+                </button>
+            </div>
+            
+            <ul class="nav-menu">
+                <!-- Inicio -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'app_automovil:inicio' %}">
+                        <i class="bi bi-house-door nav-icon"></i>
+                        <span class="nav-text">Inicio</span>
+                    </a>
+                </li>
+                
+                <!-- Mecánicos -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-people nav-icon"></i>
+                        <span class="nav-text">Mecánicos</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'app_automovil:agregar_mecanico' %}">
+                            <i class="bi bi-person-plus me-2"></i>Agregar
+                        </a></li>
+                        <li><a class="dropdown-item" href="{% url 'app_automovil:inicio_mecanicos' %}">
+                            <i class="bi bi-list-ul me-2"></i>Ver Todos
+                        </a></li>
+                    </ul>
+                </li>
+                
+                <!-- Clientes -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-badge nav-icon"></i>
+                        <span class="nav-text">Clientes</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'app_automovil:agregar_cliente' %}">
+                            <i class="bi bi-person-plus me-2"></i>Agregar
+                        </a></li>
+                        <li><a class="dropdown-item" href="{% url 'app_automovil:inicio_clientes' %}">
+                            <i class="bi bi-list-ul me-2"></i>Ver Todos
+                        </a></li>
+                    </ul>
+                </li>
+                
+                <!-- Vehículos -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-car-front nav-icon"></i>
+                        <span class="nav-text">Vehículos</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'app_automovil:agregar_vehiculo' %}">
+                            <i class="bi bi-plus-circle me-2"></i>Agregar
+                        </a></li>
+                        <li><a class="dropdown-item" href="{% url 'app_automovil:inicio_vehiculos' %}">
+                            <i class="bi bi-list-ul me-2"></i>Ver Todos
+                        </a></li>
+                    </ul>
+                </li>
+                
+                <!-- Órdenes -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-clipboard-check nav-icon"></i>
+                        <span class="nav-text">Órdenes</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'app_automovil:agregar_orden' %}">
+                            <i class="bi bi-plus-circle me-2"></i>Agregar
+                        </a></li>
+                        <li><a class="dropdown-item" href="{% url 'app_automovil:inicio_ordenes' %}">
+                            <i class="bi bi-list-ul me-2"></i>Ver Todas
+                        </a></li>
+                    </ul>
+                </li>
+                
+                <!-- Repuestos -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-gear nav-icon"></i>
+                        <span class="nav-text">Repuestos</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'app_automovil:agregar_repuesto' %}">
+                            <i class="bi bi-plus-circle me-2"></i>Agregar
+                        </a></li>
+                        <li><a class="dropdown-item" href="{% url 'app_automovil:inicio_repuestos' %}">
+                            <i class="bi bi-list-ul me-2"></i>Ver Todos
+                        </a></li>
+                    </ul>
+                </li>
+                
+                <!-- Detalles -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-wrench nav-icon"></i>
+                        <span class="nav-text">Detalles</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'app_automovil:agregar_detalle' %}">
+                            <i class="bi bi-plus-circle me-2"></i>Agregar
+                        </a></li>
+                        <li><a class="dropdown-item" href="{% url 'app_automovil:inicio_detalles' %}">
+                            <i class="bi bi-list-ul me-2"></i>Ver Todos
+                        </a></li>
+                    </ul>
+                </li>
+                
+                <!-- Facturas -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-receipt nav-icon"></i>
+                        <span class="nav-text">Facturas</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'app_automovil:agregar_factura' %}">
+                            <i class="bi bi-plus-circle me-2"></i>Agregar
+                        </a></li>
+                        <li><a class="dropdown-item" href="{% url 'app_automovil:inicio_facturas' %}">
+                            <i class="bi bi-list-ul me-2"></i>Ver Todas
+                        </a></li>
+                    </ul>
+                </li>
+                
+                <!-- Separador -->
+                <li class="nav-item my-4">
+                    <hr class="text-white-50">
+                </li>
+                
+                <!-- Administración -->
+                <li class="nav-item">
+                    <a class="nav-link text-warning" href="/admin/" target="_blank">
+                        <i class="bi bi-shield-lock nav-icon"></i>
+                        <span class="nav-text">Panel Admin</span>
+                    </a>
+                </li>
+                
+                <!-- Reportes -->
+                <li class="nav-item">
+                    <a class="nav-link text-info" href="#">
+                        <i class="bi bi-graph-up nav-icon"></i>
+                        <span class="nav-text">Reportes</span>
+                    </a>
+                </li>
+                
+                <!-- Ayuda -->
+                <li class="nav-item">
+                    <a class="nav-link text-success" href="#">
+                        <i class="bi bi-question-circle nav-icon"></i>
+                        <span class="nav-text">Ayuda</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Content Header -->
+            <div class="content-header">
+                <div class="content-title">
+                    <h2>{% block page_title %}Dashboard{% endblock %}</h2>
+                    <p>{% block page_subtitle %}Sistema de Gestión de Taller Mecánico{% endblock %}</p>
+                </div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'app_automovil:inicio' %}">Inicio</a></li>
+                        {% block breadcrumb %}{% endblock %}
+                    </ol>
+                </nav>
+            </div>
+
+            <!-- Messages/Alerts -->
+            {% if messages %}
+            <div class="messages-container">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {% if message.tags == 'success' %}
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                    {% elif message.tags == 'error' or message.tags == 'danger' %}
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    {% elif message.tags == 'warning' %}
+                        <i class="bi bi-exclamation-circle-fill me-2"></i>
+                    {% elif message.tags == 'info' %}
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                    {% endif %}
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Main Content Block -->
+            <div class="page-transition">
+                {% block contenido %}{% endblock %}
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <p>&copy; 2024 Sistema de Gestión Taller Mecánico 0237 - Todos los derechos reservados</p>
+            </div>
+            <div class="footer-right">
+                <p>Desarrollado por <strong>Sofia Granados</strong> | CBTIS 128 - Grupo 16</p>
+                <p class="small">Última actualización: <span id="footer-datetime"></span></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JavaScript Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Scripts adicionales -->
+    <script>
+        // Actualizar fecha en el footer
+        function updateFooterDate() {
+            const now = new Date();
+            const options = { 
+                year: 'numeric', 
+                month: '2-digit', 
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            const dateStr = now.toLocaleDateString('es-ES', options);
+            document.getElementById('footer-datetime').textContent = dateStr;
+        }
+        
+        // Inicializar scripts cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDateTime();
+            updateFooterDate();
+            
+            // Tooltips de Bootstrap
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+            
+            // Popovers de Bootstrap
+            var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+            var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+                return new bootstrap.Popover(popoverTriggerEl);
+            });
+            
+            // Auto-ocultar mensajes después de 5 segundos
+            setTimeout(function() {
+                var alerts = document.querySelectorAll('.alert');
+                alerts.forEach(function(alert) {
+                    var bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                });
+            }, 5000);
+        });
+        
+        // Función para confirmar eliminaciones
+        function confirmDelete(message = '¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.') {
+            return confirm(message);
+        }
+        
+        // Función para formatear números como moneda
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('es-MX', {
+                style: 'currency',
+                currency: 'MXN'
+            }).format(amount);
+        }
+    </script>
+    
+    <!-- Bloque para scripts adicionales específicos de cada página -->
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

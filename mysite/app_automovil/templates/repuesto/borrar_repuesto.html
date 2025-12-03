@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block titulo %}Borrar Repuesto{% endblock %}
+
+{% block contenido %}
+<div class="container">
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading"><i class="bi bi-exclamation-triangle"></i> ¡Confirmación de Eliminación!</h4>
+        <p>¿Estás seguro de que deseas borrar el repuesto?</p>
+        <hr>
+        <h5>{{ repuesto.nombre_repuesto }}</h5>
+        <p class="mb-0"><strong>Precio:</strong> ${{ repuesto.precio_unitario }}</p>
+        <p class="mb-0"><strong>Stock:</strong> {{ repuesto.stock }}</p>
+        <p class="mb-0"><strong>Número de Pieza:</strong> {{ repuesto.num_pieza_fabricante }}</p>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="mt-4">
+            <button type="submit" class="btn btn-danger">
+                <i class="bi bi-trash"></i> Sí, Borrar
+            </button>
+            <a href="{% url 'app_automovil:inicio_repuestos' %}" class="btn btn-secondary">
+                <i class="bi bi-x-circle"></i> Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}
